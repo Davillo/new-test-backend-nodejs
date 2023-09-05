@@ -1,6 +1,13 @@
 import app from './app';
-const port = 3000;
+import 'dotenv/config';
+import { Database } from './configs/database';
+const port = process.env.PORT;
 
-app.listen(port, () => {
-    console.log(`Listening on ${port}`);
+Database.connect().then(() => {
+    app.listen(port, () => {
+        console.log(`Listening on ${port}`);
+    });
+}).catch(error => {
+    console.log('erro ao conectar no mongoDB:', error);
 });
+
