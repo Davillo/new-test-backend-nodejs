@@ -14,6 +14,8 @@ categoryRoutes.put('/:id', validateSchema(updateCategorySchema), (req, res) =>
 	categoryController.update(req, res)
 );
 
+categoryRoutes.get('/:id', (req, res) => categoryController.show(req, res));
+
 categoryRoutes.delete('/:id', (req, res) => categoryController.destroy(req, res));
 
 export default categoryRoutes;

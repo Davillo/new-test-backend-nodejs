@@ -22,6 +22,18 @@ export class CategoryController {
         return res.status(200).json(updatedCategory);
     }
 
+    async show(req, res) {
+        const id = req.params.id;
+		const categoryRepository = new CategoryRepository(Database.getConnection());
+        const category = await categoryRepository.get(id, req.body.owner_id);
+
+        if(!id || !ObjectId.isValid(id)) {
+            return res.status(400).json({"message": "O parâmetro ID deve ser informado corretamente na URL."});
+        }
+        
+        return res.status(200).json(category);
+    }
+
     async destroy(req, res) {
         const id = req.params.id;
 		const categoryRepository = new CategoryRepository(Database.getConnection());

@@ -49,6 +49,21 @@ export class CategoryRepository {
 		return updatedCategory;
 	}
 
+	async get(id, ownerId) {
+		const categoriesCollection = this.#db.collection('categories');
+
+		const category = await categoriesCollection.findOne({
+			_id: new ObjectId(id),
+			owner_id: ownerId
+		});
+
+		if(!category) {
+			throw new Error('A categoria informada não existe.', 404);
+		}
+
+		return category;
+	}
+
 	async destroy(id) {
 		const categoriesCollection = this.#db.collection('categories');
 		const categoryExists = await findByCollectionAndId(categoriesCollection, id);
