@@ -17,7 +17,7 @@ export class Database {
 		this.#db = connection.db('database');
 	}
 
-	static getDatabase() {
+	static getConnection() {
 		return this.#db;
 	}
 }

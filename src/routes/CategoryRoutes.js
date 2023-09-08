@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { CategoryController } from '../controllers/CategoryController';
+import { validateSchema } from '../middlewares/ValidateSchemaMiddleware';
+import {createCategorySchema, updateCategorySchema} from '../models/CategorySchema';
+
+const categoryRoutes = Router();
+const categoryController = new CategoryController();
+
+categoryRoutes.post('/', validateSchema(createCategorySchema), (req, res) =>
+	categoryController.create(req, res)
+);	
+
+export default categoryRoutes;
