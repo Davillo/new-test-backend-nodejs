@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { Database } from '../configs/Database';
 import { CategoryRepository } from '../repositories/CategoryRepository';
 
@@ -9,14 +10,15 @@ export class CategoryController {
         return res.status(201).json(createdCategory);
     }
 
-    async delete(req, res) {
-		const categoryService = new CategoryRepository(DatabaseConfig.getDatabase());
+    async destroy(req, res) {
+        const id = req.params.id;
+		const categoryRepository = new CategoryRepository(Database.getConnection());
 
-        if(!req.params.id) {
-            throw new Error('O parâmetro ID deve ser informado na URL');
+        if(!id || ObjectId.isValid(id)) {
+            return res.status(400).json({"message": "O parâmetro ID deve ser informado corretamente na URL."});
         }
         
-		await categoryService.delete(req.params.id);
+		await categoryRepository.destroy(req.params.id);
 		return res.status(204).send();
 	}
 }
