@@ -25,6 +25,30 @@ export class CategoryRepository {
 		return category;
 	}
 
+	async update(category, id) {
+		const categoriesCollection = this.#db.collection('categories');
+		const categoryExists = await findByCollectionAndId(categoriesCollection, id);
+
+		if (!categoryExists) {
+			throw new Error('A categoria informada não existe.', 404);
+		}
+
+		await categoriesCollection.updateOne(
+			{
+				_id: new ObjectId(id),
+			},
+			{
+				$set: {... category},
+			}
+		);
+
+		const updatedCategory = await categoriesCollection.findOne({
+			_id: new ObjectId(id)
+		});
+
+		return updatedCategory;
+	}
+
 	async destroy(id) {
 		const categoriesCollection = this.#db.collection('categories');
 		const categoryExists = await findByCollectionAndId(categoriesCollection, id);

@@ -10,6 +10,10 @@ categoryRoutes.post('/', validateSchema(createCategorySchema), (req, res) =>
 	categoryController.create(req, res)
 );
 
+categoryRoutes.put('/:id', validateSchema(updateCategorySchema), (req, res) =>
+	categoryController.update(req, res)
+);
+
 categoryRoutes.delete('/:id', (req, res) => categoryController.destroy(req, res));
 
 export default categoryRoutes;
