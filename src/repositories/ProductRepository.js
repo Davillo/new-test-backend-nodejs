@@ -45,11 +45,11 @@ export class ProductRepository {
 	async destroy(id, ownerId) {
 		const productsCollection = this.#db.collection('products');
 		const productExists = await findByCollectionAndId(productsCollection, id);
-
+	
 		if (!productExists) {
 			throw new ErrorHandler('O produto informado não existe.', 404);
 		}
-
+		console.log(id, ownerId);
 		await productsCollection.deleteOne({ _id: new ObjectId(id), owner_id: ownerId });
 	}
 }

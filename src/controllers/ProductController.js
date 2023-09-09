@@ -41,7 +41,7 @@ export class ProductController {
                 return res.status(400).json({message: "O parâmetro ID deve ser informado corretamente na URL."});
             }
         
-            await productRepository.destroy(id);
+            await productRepository.destroy(id, req.body.owner_id);
             return res.status(204).send();
         } catch (error) {
             console.log(error);
