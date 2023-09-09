@@ -58,7 +58,7 @@ export class CategoryController {
                 return res.status(400).json({"message": "O parâmetro ID deve ser informado corretamente na URL."});
             }
         
-            await categoryRepository.destroy(req.params.id);
+            await categoryRepository.destroy(id);
             return res.status(204).send();
         } catch (error) {
             console.log(error);
