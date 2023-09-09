@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { findByCollectionAndId } from "./BaseRepository";
+import { ErrorHandler } from "../errors/ErrorHandler";
 
 export class CategoryRepository {
 
@@ -18,7 +19,7 @@ export class CategoryRepository {
 		});
 
 		if (categoryAlreadyExists) {
-			throw new Error('Categoria já existente para este owner_id.', 422);
+			throw new ErrorHandler('Categoria já existente para este owner_id.', 422);
 		}
 
 		await categoriesCollection.insertOne(category);
@@ -30,7 +31,7 @@ export class CategoryRepository {
 		const categoryExists = await findByCollectionAndId(categoriesCollection, id);
 
 		if (!categoryExists) {
-			throw new Error('A categoria informada não existe.', 404);
+			throw new ErrorHandler('A categoria informada não existe.', 404);
 		}
 
 		await categoriesCollection.updateOne(
@@ -58,7 +59,7 @@ export class CategoryRepository {
 		});
 
 		if(!category) {
-			throw new Error('A categoria informada não existe.', 404);
+			throw new ErrorHandler('A categoria informada não existe.', 404);
 		}
 
 		return category;
@@ -69,7 +70,7 @@ export class CategoryRepository {
 		const categoryExists = await findByCollectionAndId(categoriesCollection, id);
 
 		if (!categoryExists) {
-			throw new Error('A categoria informada não existe.', 404);
+			throw new ErrorHandler('A categoria informada não existe.', 404);
 		}
 
 		await categoriesCollection.deleteOne({ _id: new ObjectId(id) });
