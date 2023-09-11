@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-Com tudo feito, o servidor web da API estará executando.
+Se tudo estiver ok, o a aplicação irá iniciar e avisar a porta em que está rodando: Listening on "3001"
 
 ### Docs
 
