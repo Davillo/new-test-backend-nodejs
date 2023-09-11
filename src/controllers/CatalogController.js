@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import { Database } from '../configs/Database';
 import { CatalogRepository } from '../repositories/CatalogRepository';
 

@@ -43,7 +43,7 @@ export class CatalogRepository {
 
 	async uploadCatalogToS3(data) {
 		const s3 = new AwsS3();
-		await s3.uploadS3JSONFile(`catalog-${data.owner_id}.json`, data);
+		await s3.uploadS3JSONFile(`catalog-${data.owner}.json`, data);
 	}
 
 	async getCatalogFromS3(ownerId) {
