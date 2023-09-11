@@ -42,6 +42,46 @@ export class ProductRepository {
 		return product;
 	}
 
+	async update(data, id) {
+		const productsCollection = this.#db.collection('products');
+		const categoriesCollection = this.#db.collection('categories');
+
+		const categoryExists = await categoriesCollection.findOne({
+			title: data.category_id,
+		});
+
+		if (!categoryExists) {
+			throw new ErrorHandler(
+				'A categoria informada não existe',
+				404
+			);
+		}
+		
+		const productExists = await productsCollection.findOne({
+			title: data.title,
+			owner_id: data.owner_id
+		});
+
+		if (productExists) {
+			throw new ErrorHandler('O produto informado já existe para este owner', 422);
+		}		
+		
+		await productsCollection.updateOne(
+			{
+				_id: new ObjectId(id),
+			},
+			{
+				$set: { ...data },
+			}
+		);
+
+		const updatedProduct = await productsCollection.findOne({
+			_id: new ObjectId(id),
+		});
+
+		return updatedProduct;
+	}
+
 	async destroy(id, ownerId) {
 		const productsCollection = this.#db.collection('products');
 		const productExists = await findByCollectionAndId(productsCollection, id);
@@ -49,7 +89,7 @@ export class ProductRepository {
 		if (!productExists) {
 			throw new ErrorHandler('O produto informado não existe.', 404);
 		}
-		console.log(id, ownerId);
+	
 		await productsCollection.deleteOne({ _id: new ObjectId(id), owner_id: ownerId });
 	}
 }
