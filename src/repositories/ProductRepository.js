@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { findByCollectionAndId } from "./BaseRepository";
 import { ErrorHandler } from "../errors/ErrorHandler";
+import { AWSSQS } from "../helpers/AwsSQS";
 
 export class ProductRepository {
 
@@ -22,8 +23,11 @@ export class ProductRepository {
 		if (!categoryExists) {
 			throw new ErrorHandler('A categoria informada não existe.', 404);
 		}
-
 		await productsCollection.insertOne(data);
+
+		const awsSQS = new AWSSQS();
+		await awsSQS.sendJSONMessage({ owner: data.owner_id });
+
 		return data;
 	}
 
@@ -78,6 +82,9 @@ export class ProductRepository {
 		const updatedProduct = await productsCollection.findOne({
 			_id: new ObjectId(id),
 		});
+
+		const awsSQS = new AWSSQS();
+		await awsSQS.sendJSONMessage({ owner: data.owner_id });
 
 		return updatedProduct;
 	}
